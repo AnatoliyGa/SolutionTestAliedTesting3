@@ -1,11 +1,6 @@
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,18 +16,17 @@ private static String URIA;
 private static String URIB;
 private  static String[] URI = new String[2];
 private static BufferedReader InputC;
-
-Enjine enjine;
+private static Enjine enjine;
 
 @BeforeClass
 public  static void setUpBeforClass() throws Exception {
- URIA=System.getProperty("user.dir").concat("/src/main/java/A.txt");
- URIB=System.getProperty("user.dir").concat("/src/main/java/B.txt");
+ URIA=System.getProperty("user.dir").concat("/src/test/java/A.txt");
+ URIB=System.getProperty("user.dir").concat("/src/test/java/B.txt");
  URI[0]=URIA;
  URI[1]=URIB;
- OutputA = new BufferedWriter(new FileWriter(System.getProperty("user.dir")+"/src/main/java/A.txt"));
- OutputB = new BufferedWriter(new FileWriter(System.getProperty("user.dir")+"/src/main/java/B.txt"));
- InputC =  new BufferedReader(new FileReader(System.getProperty("user.dir")+"/src/main/java/C.txt"));
+ OutputA = new BufferedWriter(new FileWriter(System.getProperty("user.dir")+"/src/test/java/A.txt"));
+ OutputB = new BufferedWriter(new FileWriter(System.getProperty("user.dir")+"/src/test/java/B.txt"));
+InputC =  new BufferedReader(new FileReader(System.getProperty("user.dir")+"/src/test/java/C.txt"));
 }
  @Test
   public void  Test1() throws Exception{
@@ -40,11 +34,22 @@ public  static void setUpBeforClass() throws Exception {
   OutputA.write("4\r\n");
   OutputB.write("7\r\n");
   OutputB.write("9\r\n");
+  OutputA.flush();
+  OutputB.flush();
   enjine = new Enjine(URI);
-  enjine.EngineGetProperty(System.getProperty("user.dir")+"/src/main/java/C.txt");
+  enjine.EngineGetProperty(System.getProperty("user.dir")+"/src/test/java/C.txt");
   enjine.EnjineSortingSequence();
-  assertEquals("Fail!!",2,InputC.readLine());
-
-
+  InputC =  new BufferedReader(new FileReader(System.getProperty("user.dir")+"/src/test/java/C.txt"));
+  assertEquals("Fail!! Data does not match!!", 2, Integer.parseInt(InputC.readLine()));
  }
+  @After
+    public void closeDescriptor(){
+      try {
+          OutputB.close();
+          OutputB.close();
+          InputC.close();
+      } catch (IOException e) {
+          e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+      }
+  }
 }
