@@ -28,6 +28,8 @@ public class Main {
          throw new  ArrayIndexOutOfBoundsException();
      }
      */
+
+
      Enjine enjine = new Enjine(args);
         enjine.EngineGetProperty();
         enjine.EnjineSortingSequence();
